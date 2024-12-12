@@ -8,10 +8,15 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var tasks = ["1", "2", "3"]
+    @State private var isShowingAddSheet = false
+    @State private var newTask = ""
+    
+    
+    
     var body: some View {
         NavigationView{
             VStack {
-                let tasks = ["1", "2", "3"]
                 List {
                     ForEach(tasks, id:\.self) { task in
                         Text(task)
@@ -23,15 +28,36 @@ struct ContentView: View {
                 ToolbarItem(placement: .principal) {
                     Text("to do")
                 }
-            }
-            .toolbar {
-                Button("Add") {
-                    print("Add tapped")
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Add") {
+                        isShowingAddSheet = true
+                    }
                 }
+            }
+            .sheet(isPresented: $isShowingAddSheet) {
+                VStack {
+                    Text("New grind")
+                        .font(.headline)
+                        .padding()
+                    TextField("Task name", text: $newTask)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .padding()
+                    Button("Save") {
+                        if !newTask.isEmpty {
+                            tasks.append(newTask)
+                            newTask = ""
+                            isShowingAddSheet = false
+                        }
+                    }
+                    .padding()
+                    Spacer()
+                }
+                .padding()
             }
         }
     }
 }
+
 
 
 #Preview {
