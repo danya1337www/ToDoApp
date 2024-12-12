@@ -9,37 +9,30 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        HStack {
-            Image(systemName: "star.fill")
-                .foregroundStyle(.yellow)
-                .padding(30)
-            Text("Favorite")
-                .padding(-11)
-            Spacer()
-            Text("do it")
-                .font(.largeTitle)
-                .bold()
-            Spacer()
-            Button("Add") {
-                print("Add")
+        NavigationView{
+            VStack {
+                let tasks = ["1", "2", "3"]
+                List {
+                    ForEach(tasks, id:\.self) { task in
+                        Text(task)
+                    }
+                }
             }
-            .padding(30)
-        }
-        VStack {
-            List {
-                Text("do it")
-                Text("do it")
-                Text("do it")
-                
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Text("to do")
+                }
             }
-            .padding()
-            .background(Color.blue.opacity(0.2))
-            .cornerRadius(20)
-            .scrollContentBackground(.hidden)
+            .toolbar {
+                Button("Add") {
+                    print("Add tapped")
+                }
+            }
         }
-        .padding()
     }
 }
+
 
 #Preview {
     ContentView()
