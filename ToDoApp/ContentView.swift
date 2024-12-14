@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var tasks = ["1", "2", "3"]
+    @State private var tasks = ["Learn iOS Dev", "Make Money", "Live Life"]
     @State private var isShowingAddSheet = false
     @State private var newTask = ""
     
@@ -21,6 +21,7 @@ struct ContentView: View {
                     ForEach(tasks, id:\.self) { task in
                         Text(task)
                     }
+                    .onDelete(perform: deleteTask)
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
@@ -55,6 +56,9 @@ struct ContentView: View {
                 .padding()
             }
         }
+    }
+    private func deleteTask(at offsets: IndexSet) {
+        tasks.remove(atOffsets: offsets)
     }
 }
 
