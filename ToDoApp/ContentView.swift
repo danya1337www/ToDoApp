@@ -17,50 +17,55 @@ struct ContentView: View {
     var body: some View {
         NavigationView{
             VStack {
-                List {
-                    ForEach(tasks, id:\.self) { task in
-                        Text(task)
-                    }
-                    .onDelete(perform: deleteTask)
-                }
-            }
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Text("to do")
-                }
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Add") {
-                        isShowingAddSheet = true
+                if tasks.isEmpty {
+                    Text("empty")
+                } else {
+                    List {
+                        ForEach(tasks, id:\.self) { task in
+                            Text(task)
+                        }
+                        .onDelete(perform: deleteTask)
                     }
                 }
+               
             }
-            .sheet(isPresented: $isShowingAddSheet) {
-                VStack {
-                    Text("New grind")
-                        .font(.headline)
-                        .padding()
-                    TextField("Task name", text: $newTask)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .padding()
-                    Button("Save") {
-                        if !newTask.isEmpty {
-                            tasks.append(newTask)
-                            newTask = ""
-                            isShowingAddSheet = false
+                .navigationBarTitleDisplayMode(.inline)
+                .navigationTitle("workin'")
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button(action : {
+                            isShowingAddSheet = true
+                        }) {
+                            Image(systemName: "plus")
                         }
                     }
-                    .padding()
-                    Spacer()
                 }
-                .padding()
+                .sheet(isPresented: $isShowingAddSheet) {
+                    VStack {
+                        Text("New grind")
+                            .font(.headline)
+                            .padding()
+                        TextField("Task name", text: $newTask)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                            .padding()
+                        Button("Save") {
+                            if !newTask.isEmpty {
+                                tasks.append(newTask)
+                                newTask = ""
+                                isShowingAddSheet = false
+                            }
+                        }
+                        .padding()
+                        Spacer()
+                    }
+                    .padding()
+                }
             }
         }
+        private func deleteTask(at offsets: IndexSet) {
+            tasks.remove(atOffsets: offsets)
+        }
     }
-    private func deleteTask(at offsets: IndexSet) {
-        tasks.remove(atOffsets: offsets)
-    }
-}
 
 
 
